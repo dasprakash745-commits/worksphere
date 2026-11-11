@@ -1,0 +1,31 @@
+spring:
+
+  application:
+    name: worksphere-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${DB_NAME:worksphere}
+    username: ${DB_USERNAME:worksphere_app}
+    password: ${DB_PASSWORD:local-dev-only-change-me}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+    show-sql: false
+
+    open-in-view: false
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+  endpoint:
+    health:
+      show-details: never

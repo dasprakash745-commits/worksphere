@@ -1,0 +1,29 @@
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: worksphere-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${DB_NAME:-worksphere}
+      POSTGRES_USER: ${DB_USERNAME:-worksphere_app}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - worksphere_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${DB_USERNAME:-worksphere_app} -d ${DB_NAME:-worksphere}
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  worksphere_postgres_data:
